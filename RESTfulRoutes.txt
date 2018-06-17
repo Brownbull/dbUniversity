@@ -1,9 +1,0 @@
-Name    Path            Http Verb  Moongose Method        Purpose
-==================================================================================================================
-Index   /dogs              GET     Dog.find()             List all dogs
-New     /dogs/new          GET     N/A                    Show new dog form
-Create  /dogs     ->Rdrct  POST    Dog.create()           Create a new dog, then REDIRECT somewhere
-Show    /dogs/:id          GET     Dog.findById()         Show info about one specific dog
-Edit    /dogs/:id/edit     GET     Dog.findById()         Show edit form for one dog
-Update  /dogs/:id ->Rdrct  PUT     Dog.findByIdAndUpdate  Update a particular dog, then REDIRECT somewhere
-Destroy /dogs/:id ->Rdrct  DELETE  Dog.findByIdAndRemove  Delete a particular dog, then REDIRECT somewhere

@@ -1,0 +1,90 @@
+<% include ../partials/header %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Dashboard of <%= campground.name %></h1>
+    </div>
+  </div>
+  <div class="row" style="text-align:center;">
+    <div class="col-xs-4">
+      <div><h3>Number of camping visits</h3></div>
+      <h4><%= campground.visits %> visits</h4>
+    </div>
+    <div class="col-xs-4">
+      <div><h3>Quantity of ticket sell</h3></div>
+      <h4><%= numberofTickets.totalTickets %> tickets sell </h4>
+    </div>
+    <div class="col-xs-4">
+      <div><h3>Amount of ticket sell</h3></div>
+      <h4>$<%= numberofTickets.amountTickets %> dollars</h4>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-xs-8"><h2>Detail of tickets sell</h2></div>
+    <div class="row">
+        <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visist Date</th>
+                <th>Quanity</th>
+                <th>Purchase Date</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% tickeds.forEach(function(tick){ %>
+                  <tr>
+                      <td><%= tick.author.nickname %></td>
+                      <td><%= tick.visitdate %></td>
+                      <td><%= tick.quantity %></td>
+                      <td><%= tick.time %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="thumbnail">
+        <img class="img-responsive" src="<%= campground.image %>" alt="camp image">
+        <div class="caption">
+          <h4 class="pull-right">$<%= campground.price %>/night</h4>
+          <h4><a><%= campground.name %></a></h1>
+          <p><%= campground.description %></p>
+          <p><em>Submitted by <%= campground.author.nickname %></em></p>
+          <p><em>created on <%= campground.time %></em></p>
+          <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+          <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+          <form class="delete-form" class="" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
+            <button class="btn btn-xs btn-danger">Delete</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="well">
+        <h1>Comments</h1>
+        <% campground.comments.forEach(function(comment){ %>
+          <div class="row">
+            <div class="col-md-12">
+              <strong><%= comment.author.nickname %></strong>
+              <span class="pull-right">created on <%= comment.time %></span>
+              <p><%=comment.text%></p>
+              <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+              <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-warning">Edit</a>
+              <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=delete" method="post" class="delete-form"> 
+                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+              </form>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
+<% include ../partials/footer %>

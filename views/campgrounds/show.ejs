@@ -1,0 +1,85 @@
+<% include ../partials/header %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <p class="lead">Camp <%= campground.name %></p>
+      <div class="list-group">
+        <li class="list-group-item active">Informacion Principal</li>
+        <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+          <li class="list-group-item"><a href="/campgrounds/<%= campground._id %>/dashboards/<%= campground._id %>"> Go to Dashboard</a></li>
+        </div>
+        <% }else{ %> 
+      </div>
+      <div class="">
+        <h3>Buy a ticket</h3>
+        <div>
+          <% if(currentUser){ %>
+            <form action="/campgrounds/<%= campground._id %>/tickets" method="post">
+                <div class="form-group">
+                  <label for="exampleInputVisitDate">Visit Date</label>
+                  <input type="date" class="form-control" id="exampleInputVisitDate" aria-describedby="emailHelp" name="ticket[visitdate]">
+                </div>
+                <div class="form-group">
+                    <label for="InputNumberOfPeople">Quantity</label>
+                    <input class="form-control" id="InputNumberOfPeople" type="number" name="ticket[quantity]" placeholder="number of people" min="1" step="1">
+                  </div>
+                <button type="submit" class="btn btn-success">Comprar</button>
+              </form>
+          <% }else{ %>
+            <p>ups... to buy you should login</p>
+          <% } %>  
+        </div>
+      </div>
+      <% } %> 
+    </div>
+    <div class="col-md-9">
+      <div class="thumbnail">
+        <img class="img-responsive" src="<%= campground.image %>" alt="camp image">
+        <div class="caption">
+          <h4 class="pull-right">$<%= campground.price %>/night</h4>
+          <h4><a><%= campground.name %></a></h1>
+          <p><%= campground.description %></p>
+          <p><em>Submitted by <%= campground.author.nickname %></em></p>
+          <p><em>created on <%= campground.time %></em></p>
+          
+          <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+          <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+          <form class="delete-form" class="" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
+            <button class="btn btn-xs btn-danger">Delete</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+      <div class="well">
+        <hr>
+        <% campground.comments.forEach(function(comment){ %>
+          <div class="row">
+            <div class="col-md-12">
+              <strong><%= comment.author.nickname %></strong>
+              <span class="pull-right">created on <%= comment.time %></span>
+              <p><%=comment.text%></p>
+              <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+              <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-warning">Edit</a>
+              <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=delete" method="post" class="delete-form"> 
+                <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+              </form>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+        <hr>
+        <div>
+          <form action="/campgrounds/<%= campground._id %>/comments" method="post">
+            <div class="form-group">
+              <input class="form-control" type="text" name="comment[text]" placeholder="text">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-lg btn-primary btn-block">Nuevo Comentario!</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% include ../partials/footer %>
