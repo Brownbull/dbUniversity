@@ -9,7 +9,7 @@ var middleware = require("../middleware"); // same as middleware/index.js
 
 
 // SHOW
-router.get("/:id",function(req, res){
+router.get("/:id",middleware.checkCampgroundOwnership,function(req, res){
   // find camp with id
     totalAmout = 0;
 
@@ -47,6 +47,12 @@ router.get("/:id",function(req, res){
             if(err){
                 console.log(err)
             }else{
+                if(TicketsSell.length==0){
+                    TicketsSell=[{
+                        totalTickets:0,
+                        amountTickets:0
+                    }]
+                }
                 totalAmount = tick.reduce(function(quantity) { return quantity; }, 0)
                 res.render("dashboards/show.ejs", {campground: foundCampground, tickeds:tick, numberofTickets: TicketsSell[0]});
             }
